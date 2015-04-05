@@ -3,15 +3,22 @@
 
 A command line library for writing quick command line utilities. 
 
-
 ### TODO:
 
+- Add support to subcommands
 - Support for printing help as a subcommand or the `--help` flag
 - Support for flags preceded by `--`
 - Add testing
 - Add to pip
 - Add support for different colors to highlight errors better
 
+### Example
+
+The below example named `example.py` can be run via the command:
+
+```
+./example.py range -start 1 -end 200
+```
 
 ```python
 #!/usr/bin/env python
