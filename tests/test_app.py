@@ -31,7 +31,7 @@ class TestApp(unittest.TestCase):
         with self.assertRaises(SystemExit):
             self.app.run(['command.py', 'nonexistent_command'])
 
-    def test_app_run_with_cli_arguments_less_than_2(self):
+    def test_app_run_with_less_than_2_arguments(self):
         with self.assertRaises(SystemExit):
             self.app.run([])
 
