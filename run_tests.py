@@ -1,9 +1,9 @@
 
 import unittest
-from test_app import TestAppCommandWithNoFlags, TestAppCommandWithFlags
-from test_command import TestCommand
-from test_flag import TestFlagWithoutDefault, TestFlagWithDefault
-from test_context import TestContext
+from tests.test_app import TestAppCommandWithNoFlags, TestAppCommandWithFlags
+from tests.test_command import TestCommand
+from tests.test_flag import TestFlagWithoutDefault, TestFlagWithDefault
+from tests.test_context import TestContext
 
 if __name__ == '__main__':
     test_loader = unittest.TestLoader()

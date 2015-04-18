@@ -2,5 +2,6 @@ language: python
 python:
   - "3.4"
 install:
+  - pip install --upgrade pip
   - pip install .
-script: python tests/run_tests.py
+script: python setup.py test
