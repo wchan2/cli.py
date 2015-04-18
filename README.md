@@ -1,5 +1,5 @@
 
-## Command Line Library
+## Command Line Library [![Build Status](https://travis-ci.org/wchan2/cli.py.svg)](https://travis-ci.org/wchan2/cli.py)
 
 A command line library for writing quick command line utilities. 
 
@@ -12,7 +12,6 @@ A command line library for writing quick command line utilities.
 - Add support to subcommands
 - Support for printing help as a subcommand or the `--help` flag
 - Support for flags preceded by `--`
-- Add testing
 - Add to pip
 - Add support for different colors to highlight errors better
 
