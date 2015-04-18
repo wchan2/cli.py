@@ -10,10 +10,10 @@ class TestFlagWithoutDefault(unittest.TestCase):
         self.flag = None
 
     def test_flag_name(self):
-        self.assertEquals(self.flag.name, 'flag name', 'flag name is the proper value')
+        self.assertEqual(self.flag.name, 'flag name', 'flag name is the proper value')
 
     def test_flag_description(self):
-        self.assertEquals(self.flag.description, 'flag description', 'flag description is the proper value')
+        self.assertEqual(self.flag.description, 'flag description', 'flag description is the proper value')
 
     def test_flag_default_value(self):
         self.assertEqual(self.flag.value, None, 'the default value is set to none')
