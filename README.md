@@ -48,6 +48,14 @@ if __name__ == '__main__':
     app.run(sys.argv)
 ```
 
+## Running the tests
+
+The below command is for running the tests.
+
+```
+python setup.py test
+```
+
 
 ## License
 

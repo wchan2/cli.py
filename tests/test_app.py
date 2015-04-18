@@ -7,7 +7,12 @@ from cli.flag import Flag
 class TestAppCommandWithNoFlags(unittest.TestCase):
     def setUp(self):
         self.app = App(name='app name', description='app description')
+
+        # mock the print statements so it doesn't actually output to stdout
         self.app.print_help = MagicMock()
+        self.app._print_command_name_required = MagicMock()
+        self.app._print_flag_value_required = MagicMock()
+
         self.command = Command('test_command', 'test description')
         self.command.execute = MagicMock(return_value=None)
         self.app.command(self.command)

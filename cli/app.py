@@ -12,12 +12,9 @@ class App:
         self.commands.append(command)
         return self.commands[-1]
 
-    def print_help(self):
-        print('\n'.join(map(lambda cmd: str(cmd), self.commands)))
-
     def run(self, cli_args):
         if len(cli_args) < 2:
-            print('command name required')
+            self._print_command_name_required()
             self.print_help()
             sys.exit(1)
         command = self._find_command(cli_args[1])
@@ -27,6 +24,15 @@ class App:
         args = self._parse_arguments(cli_args)
         context = self._parse_context(command.flags, args)
         command.execute(context)
+
+    def print_help(self):
+        print('\n'.join(map(lambda cmd: str(cmd), self.commands)))
+
+    def _print_command_name_required(self):
+        print('command name required')
+
+    def _print_flag_value_required(self, flag):
+        print('%s flag specified without a value\n--' % flag.replace('-', ''))
 
     def _find_command(self, cmd_name):
         found_commands = list(filter(lambda cmd: cmd.name == cmd_name, self.commands))
@@ -50,7 +56,7 @@ class App:
                 try:
                     arguments[arg.replace('-', '')] = cli_arguments[i + 1]
                 except:
-                    print('%s flag specified without a value\n--' % arg.replace('-', ''))
+                    self._print_flag_value_required()
                     self.print_help()
                     sys.exit(1)
         return arguments
