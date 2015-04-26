@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import Mock
 from cli.app import App
 from cli.command import Command
 from cli.flag import Flag
@@ -9,12 +9,10 @@ class TestAppCommandWithNoFlags(unittest.TestCase):
         self.app = App(name='app name', description='app description')
 
         # mock the print statements so it doesn't actually output to stdout
-        self.app.print_help = MagicMock()
-        self.app._print_command_name_required = MagicMock()
-        self.app._print_flag_value_required = MagicMock()
+        self.app.print_help = Mock()
 
         self.command = Command('test_command', 'test description')
-        self.command.execute = MagicMock(return_value=None)
+        self.command.execute = Mock(return_value=None)
         self.app.command(self.command)
 
     def tearDown(self):
@@ -29,7 +27,7 @@ class TestAppCommandWithNoFlags(unittest.TestCase):
 
     def test_app_commands(self):
         self.assertEquals(self.app.commands[0], self.command, 'the command is saved in the app\'s command list')
-
+        
     def test_app_run_with_found_command(self):
         self.app.run(['command.py', 'test_command'])
         self.assertTrue(self.command.execute.called, 'command is found and executed')
@@ -43,8 +41,8 @@ class TestAppCommandWithNoFlags(unittest.TestCase):
             self.app.run([])
 
     def test_app_command_executed_with_no_flags(self):
-        self.app.run(['command.py', 'test_command', '-testflag', 'flagvalue'])
-        self.assertEqual(self.command.execute.call_args[0][0].get('test'), None, 'command is executed with an empty context')
+        self.app.run(['command.py', 'test_command'])
+        self.assertTrue(self.command.execute.called, 'parses arguments')
 
 class TestAppCommandWithFlags(TestAppCommandWithNoFlags):
     def setUp(self):
@@ -52,7 +50,7 @@ class TestAppCommandWithFlags(TestAppCommandWithNoFlags):
         self.command.flags = [Flag('flag1', 'flag 1 desc'), Flag('flag2', 'flag 2 desc')]
 
     def test_cli_args_does_not_include_flags(self):
-        self.app.run(['command.py', 'test_command', '-flag1', 'flag 1 value', '-flag2', 'flag 2 value'])
+        self.app.run(['command.py', 'test_command', '-flag1', 'flag 1 value', '--flag2', 'flag 2 value'])
         context = self.command.execute.call_args[0][0]
 
         self.assertEqual(context.get('flag1'), 'flag 1 value', 'the first flag is the proper value')

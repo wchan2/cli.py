@@ -1,6 +1,6 @@
 
 import unittest
-from tests.test_app import TestAppCommandWithNoFlags, TestAppCommandWithFlags
+from tests.test_app import TestAppCommandWithFlags, TestAppCommandWithNoFlags
 from tests.test_command import TestCommand
 from tests.test_flag import TestFlagWithoutDefault, TestFlagWithDefault
 from tests.test_context import TestContext

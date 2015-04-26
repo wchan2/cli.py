@@ -16,17 +16,17 @@ class TestFlagWithoutDefault(unittest.TestCase):
         self.assertEqual(self.flag.description, 'flag description', 'flag description is the proper value')
 
     def test_flag_default_value(self):
-        self.assertEqual(self.flag.value, None, 'the default value is set to none')
+        self.assertEqual(self.flag.default, None, 'the default value is set to none')
 
 class TestFlagWithDefault(TestFlagWithoutDefault):
     def setUp(self):
-        self.flag = Flag('flag name', 'flag description', value='default value')
+        self.flag = Flag('flag name', 'flag description', default='default value')
 
     def tearDown(self):
         self.flag = None
 
     def test_flag_default_value(self):
-        self.assertEqual(self.flag.value, 'default value', 'the flag\'s default value is set to the default value')
+        self.assertEqual(self.flag.default, 'default value', 'the flag\'s default value is set to the default value')
 
 if __name__ == '__main__':
     unittest.main()

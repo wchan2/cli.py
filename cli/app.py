@@ -1,6 +1,7 @@
 import sys
 from collections import defaultdict
 from cli.context import Context
+import argparse
 
 class App:
     def __init__(self, **kwargs):
@@ -12,27 +13,25 @@ class App:
         self.commands.append(command)
         return self.commands[-1]
 
-    def run(self, cli_args):
-        if len(cli_args) < 2:
-            self._print_command_name_required()
+    def run(self, argv):
+        if len(argv) < 2 or not self._find_command(argv[1]):
             self.print_help()
             sys.exit(1)
-        command = self._find_command(cli_args[1])
-        if not command:
-            self.print_help()
-            sys.exit(1)
-        args = self._parse_arguments(cli_args)
-        context = self._parse_context(command.flags, args)
-        command.execute(context)
+
+        command = self._find_command(argv[1])
+        command.execute(self._create_context(command, argv))
+
+    def create_parser(self, command):
+        parser = argparse.ArgumentParser(prog=self.name, description=self.description)
+        parser.add_argument(command.name, help=command.description)
+
+        for flag in command.flags:
+            parser.add_argument(''.join(['-', flag.name]), ''.join(['--', flag.name]), default=flag.default, help=flag.description)
+        return parser
 
     def print_help(self):
-        print('\n'.join(map(lambda cmd: str(cmd), self.commands)))
-
-    def _print_command_name_required(self):
-        print('command name required')
-
-    def _print_flag_value_required(self, flag):
-        print('%s flag specified without a value\n--' % flag.replace('-', ''))
+        for command in self.commands:
+            self.create_parser(command).print_help()
 
     def _find_command(self, cmd_name):
         found_commands = list(filter(lambda cmd: cmd.name == cmd_name, self.commands))
@@ -40,23 +39,9 @@ class App:
             return found_commands[0]
         return None
 
-    def _parse_context(self, flags, cli_arguments):
+    def _create_context(self, command, argv):
         context = Context()
-        for flag in flags:
-            if cli_arguments[flag.name]:
-                context.set(flag.name, cli_arguments[flag.name])
-            else:
-                context.set(flag.name, flag.value)
+        cli_args = self.create_parser(command).parse_args(argv[1:])
+        for flag in command.flags:
+            context.set(flag.name, getattr(cli_args, flag.name))
         return context
-
-    def _parse_arguments(self, cli_arguments):
-        arguments = defaultdict(lambda: None)
-        for i, arg in enumerate(cli_arguments):
-            if arg.startswith('-'):
-                try:
-                    arguments[arg.replace('-', '')] = cli_arguments[i + 1]
-                except:
-                    self._print_flag_value_required()
-                    self.print_help()
-                    sys.exit(1)
-        return arguments

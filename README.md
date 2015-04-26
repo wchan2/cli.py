@@ -10,8 +10,6 @@ A command line library for writing quick command line utilities.
 ### TODO:
 
 - Add support to subcommands
-- Support for printing help as a subcommand or the `--help` flag
-- Support for flags preceded by `--`
 - Add to pip
 - Add support for different colors to highlight errors better
 
